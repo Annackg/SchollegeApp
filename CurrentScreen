@@ -1,0 +1,23 @@
+import SwiftUI
+struct CurrentScreen: View {
+    let user: User
+    @Binding var selectedTab: Tabs
+    var body: some View {
+        VStack {
+            if self.selectedTab == .home {
+                homeView()
+            } else if self.selectedTab == .search {
+                searchView()
+            }
+            else if self.selectedTab == .profile {
+                ProfileView(user: user)
+            }
+            else if self.selectedTab == .competitions {
+                CompetitionsView()
+            }
+        }
+    }
+}
+#Preview {
+    CurrentScreen(user: User.MOCK_USER, selectedTab: .constant(.home))
+}
