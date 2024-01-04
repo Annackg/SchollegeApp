@@ -1,0 +1,28 @@
+import SwiftUI
+struct CustomSearchView: View {
+    @State private var fetch = GoogleManager()
+    @State private var searchWord = "High School Competitions"
+    
+    
+    var body: some View {
+        ScrollView (.horizontal) {
+            HStack (spacing: 20) {
+                
+                ForEach(0..<9) { index in
+                GoogleView(index: index)
+                        .padding()
+                }
+                .padding()
+                
+            }
+            
+            Divider()
+                .onAppear() {
+                    fetch.fetchGoogle(searchWord: searchWord)
+                }
+        }
+    }
+}
+#Preview {
+    CustomSearchView()
+}
