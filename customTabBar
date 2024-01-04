@@ -12,3 +12,47 @@ struct customTabBar: View {
     var height = UIScreen.main.bounds.height
     
     var body: some View {
+        
+       
+            ZStack {
+                Rectangle()
+                    .frame(width: width, height: 83)
+                    .foregroundColor(.white)
+                
+                HStack (alignment: .center) {
+                    
+                Button {
+                    selectedTab = .home
+                } label: {
+                    tabBarButton(imageName: "house", isActive: selectedTab == .home, height: 45, width: 50, divisor: 5)
+                }
+                
+                Button {
+                    selectedTab = .search
+                } label: {
+                    tabBarButton(imageName: "magnifyingglass", isActive: selectedTab == .search, height: 40, width: 40, divisor: 5)
+                }
+                
+                Button {
+                    selectedTab = .competitions
+                } label: {
+                    tabBarButton(imageName: "book.closed", isActive: selectedTab == .competitions, height: 45, width: 48, divisor: 5)
+                }
+                
+                Button {
+                    selectedTab = .profile
+                } label: {
+                    tabBarButton(imageName: "person", isActive: selectedTab == .profile, height: 40, width: 40, divisor: 5)
+                }
+                
+                
+             }
+                .frame(height: 82)
+            }
+            .position(x: width/2, y: height - 130)
+        
+        }
+    }
+#Preview {
+    customTabBar(selectedTab: .constant(.home))
+}
