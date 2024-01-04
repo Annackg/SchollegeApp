@@ -1,0 +1,10 @@
+import SwiftUI
+struct homeView: View {
+    
+    var body: some View {
+        feedView()
+    }
+}
+#Preview {
+    homeView()
+}
