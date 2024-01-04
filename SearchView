@@ -1,0 +1,42 @@
+import SwiftUI
+struct searchView: View {
+    @State private var searchText = ""
+    
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    // interest = colleges & competitions
+                    // replace things inside ForEach for the mock college data profile (needs competitions and scholarships too)
+                    ForEach(0 ... 15, id: \.self) { interest in
+                        HStack {
+                            Image("ImageCMU")
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 40, height: 40)
+                                .clipShape(Circle())
+                            
+                            VStack(alignment: .leading) {
+                                Text("Carnegie Mellon")
+                                    .fontWeight(.semibold)
+                                // type of event?
+                                Text("Private University in Pittsburgh, PA")
+                            }
+                            .font(.footnote)
+                            
+                            Spacer()
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+                .padding(.top, 8)
+                .searchable(text: $searchText, prompt: "Search...")
+            }
+            .navigationTitle("Explore")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}
+#Preview {
+    searchView()
+}
