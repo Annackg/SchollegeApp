@@ -1,0 +1,76 @@
+import SwiftUI
+struct feedCell: View {
+    var body: some View {
+        VStack {
+            // name of college + location(?)
+            HStack {
+                Text("collegeName")
+                    .font(.title)
+                    .fontWeight(.bold)
+                
+                Spacer()
+                
+                Text("collegeLocation")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                Image(systemName: "location") // change symbol OR make it a navigation link for directions on google maps
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            
+            // post image (Make it list of images)
+            // Search up collegeName and get images from internet automatically
+            Image("ImageMIT")
+                .resizable()
+                .scaledToFill()
+                .frame(height: 400)
+                .clipShape(Rectangle())
+            
+            
+            
+            // save, share college, comment thread for college (?) | ACTION BUTTONS
+            HStack(spacing: 16) {
+                Button {
+                    print("Save college")
+                } label: {
+                    Image(systemName: "heart")
+                        .imageScale(.large)
+                        .foregroundColor(.black)
+                }
+                Button {
+                    print("Share college")
+                } label: {
+                    Image(systemName: "bubble.right")
+                        .imageScale(.large)
+                        .foregroundColor(.black)
+                }
+                Button {
+                    print("Comment about college")
+                } label: {
+                    Image(systemName: "paperplane")
+                        .imageScale(.large)
+                        .foregroundColor(.black)
+                }
+                Spacer()
+                // more information | create image when using navigationLink. Get rid of it on feedCell after
+                Image(systemName: "plus")
+                    .imageScale(.large)
+                    .padding(.trailing, 8)
+                
+            }
+            .padding(.leading, 8)
+            .padding(.top, 4)
+            
+            // percentage of interest from people with similar colleges in their lists (implement later?)
+//            Text("x% interested")
+//                .font(.footnote)
+//                .fontWeight(.semibold)
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//                .padding(.leading, 10)
+//                .padding(.top, 1)
+        }
+    }
+}
+#Preview {
+    feedCell()
+}
