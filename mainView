@@ -1,0 +1,21 @@
+import SwiftUI
+struct mainView: View {
+    let user: User
+    @EnvironmentObject var viewModel: RegistrationViewModel
+    @State var selectedTab: Tabs = .home
+    var width = UIScreen.main.bounds.width
+    var height = UIScreen.main.bounds.height
+    
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                CurrentScreen(user: user, selectedTab: self.$selectedTab)
+                        customTabBar(selectedTab: $selectedTab)
+            }
+        }
+    }
+}
+        
+#Preview {
+    mainView(user: User.MOCK_USER)
+}
