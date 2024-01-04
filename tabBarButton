@@ -1,0 +1,35 @@
+import SwiftUI
+struct tabBarButton: View {
+    var imageName: String
+    var isActive: Bool
+    var height: Double
+    var width: Double
+    var divisor: Double
+    
+    var body: some View {
+        
+        
+        GeometryReader { geo in
+            
+            if isActive {
+                
+                Rectangle()
+                    .foregroundColor(.yellow)
+                    .frame(width: geo.size.width/1.5, height: 5)
+                    .padding(.leading, geo.size.width/divisor)
+            }
+            VStack (alignment: .center, spacing: 4) {
+                Image(systemName: imageName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: width, height: height)
+            }
+            .padding(.leading)
+            .frame(width: geo.size.width, height: geo.size.height)
+        }
+        .tint(Color(.black))
+    }
+}
+#Preview {
+    tabBarButton(imageName: "house", isActive: true, height: 45, width: 50, divisor: 5)
+}
