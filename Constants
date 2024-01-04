@@ -1,0 +1,7 @@
+import Foundation
+struct Constants {
+    
+    static let API_KEY = "AIzaSyDgeMXrESB2FB_BMWJL9qj7YmZLqRuSo7o"
+    static let API_ID = "824462aea418e4b54"
+    
+}
