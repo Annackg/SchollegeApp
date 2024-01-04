@@ -1,0 +1,9 @@
+import SwiftUI
+struct CompetitionsView: View {
+    var body: some View {
+        CustomSearchView()
+    }
+}
+#Preview {
+    CompetitionsView()
+}
