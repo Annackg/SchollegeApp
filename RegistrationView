@@ -1,0 +1,104 @@
+import SwiftUI
+struct RegistrationView: View {
+    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: RegistrationViewModel
+    
+    var body: some View {
+        VStack {
+            Image(systemName: "graduationcap.fill")
+                .resizable()
+                .scaledToFill()
+                .foregroundColor(.black)
+                .frame(width: 100, height: 120)
+                .padding(.vertical, 32)
+            
+            VStack(spacing: 24) {
+                InputView(text: $viewModel.email,
+                          title: "Email Address",
+                          placeholder: "name@example.com")
+                .autocapitalization(.none)
+                
+                InputView(text: $viewModel.fullname,
+                          title: "Full Name",
+                          placeholder: "Enter your name")
+                                
+                
+                InputView(text: $viewModel.password,
+                          title: "Password",
+                          placeholder: "Enter your password",
+                          isSecureField: true)
+                
+                ZStack(alignment: .trailing) {
+                    InputView(text: $viewModel.confirmPassword,
+                              title: "Confirm Password",
+                              placeholder: "Confirm your password",
+                              isSecureField: true)
+                    
+                    if !viewModel.password.isEmpty && !viewModel.confirmPassword.isEmpty {
+                        if viewModel.password == viewModel.confirmPassword {
+                            Image(systemName: "checkmark.circle.fill")
+                                .imageScale(.large)
+                                .fontWeight(.bold)
+                                .foregroundColor(Color(.systemGreen))
+                        } else {
+                            Image(systemName: "xmark.circle.fill")
+                                .imageScale(.large)
+                                .fontWeight(.bold)
+                                .foregroundColor(Color(.systemRed))
+                        }
+                    }
+                    
+                }
+            }
+            .padding(.horizontal)
+            .padding(.top, 12)
+            
+            Button {
+                Task {
+                    try await viewModel.createUser()
+                }
+            } label: {
+                HStack
+                {
+                    Text("SIGN UP")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    Image(systemName: "arrow.right")
+                        .imageScale(.medium)
+                    
+                }
+                .foregroundColor(.white)
+                .frame(width: UIScreen.main.bounds.width - 32, height: 48 )
+                
+            }
+            .background(Color(.systemBlue))
+            .disabled(!formIsValid)
+            .opacity(formIsValid ? 1.0 : 0.5)
+            .cornerRadius(10)
+            .padding(.top, 24)
+            
+            Spacer()
+            
+            Button(action: {
+                dismiss()
+            }, label: {
+                Text("Already have an account?")
+                    .font(.callout)
+                    .fontWeight(.light)
+                    .foregroundColor(Color.black)
+                Text("Sign In")
+                    .fontWeight(.bold)
+            })
+        }
+       
+    }
+}
+// MARK: AuthenticationFormProtocol
+extension RegistrationView: AuthenticationFormProtocol {
+    var formIsValid: Bool {
+        return !viewModel.email.isEmpty && viewModel.email.contains("@") && !viewModel.password.isEmpty && viewModel.password.count > 5 && viewModel.confirmPassword == viewModel.password && !viewModel.fullname.isEmpty
+    }
+}
+#Preview {
+    RegistrationView()
+}
