@@ -1,0 +1,76 @@
+import Foundation
+import FirebaseAuth
+import FirebaseFirestoreSwift
+import Firebase
+protocol AuthenticationFormProtocol {
+   var formIsValid: Bool { get }
+}
+class AuthService {
+    @Published var userSession: FirebaseAuth.User?
+    @Published var currentUser: User?
+    
+    static let shared = AuthService()
+    // @Published var currentUser: User?
+    // MARK: Work on getting the active and inactive user portion. Use @state?
+    
+    init() {
+        Task {
+            try await loadUserData()
+        }
+    }
+    
+    @MainActor
+    func signIn(withEmail email: String, password: String) async throws {
+        do {
+            let result = try await Auth.auth().signIn(withEmail: email, password: password)
+            self.userSession = result.user
+            try await loadUserData()
+        } catch {
+            print("DEBUG: Failed to logn in with error \(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    func createUser(email: String, password: String, fullname: String) async throws {
+        do {
+            let result = try await Auth.auth().createUser(withEmail: email, password: password)
+            self.userSession = result.user
+            await uploadUserData(uid: result.user.uid, fullname: fullname, email: email)
+        } catch {
+            print("DEBUG: Failed to create user with error \(error.localizedDescription)")
+        }
+    }
+    
+    func loadUserData() async throws {
+        self.userSession = Auth.auth().currentUser
+        guard let currentUid = userSession?.uid else { return }
+        let snapshot = try await Firestore.firestore().collection("users").document(currentUid).getDocument()
+        self.currentUser = try? snapshot.data(as: User.self)
+    }
+    
+    func signOut() {
+  //      do {
+            try? Auth.auth().signOut() // signs out user on backend
+            self.userSession = nil // wipes out user session and takes us back to login screen
+            self.currentUser = nil // wipes out current user data model
+            //        } catch {
+            //            print("DEBUG: Failed to sign out with error \(error.localizedDescription)")
+            //        }
+            
+   //     }
+    }
+        
+        //   func deleteAccount(completion: @escaping () -> Void) {
+       // to be implemented
+        //   }
+        
+        
+        private func uploadUserData(uid: String, fullname: String, email: String) async {
+            let user = User(id: uid, fullname: fullname, email: email)
+            self.currentUser = user
+            guard let encodedUser = try? Firestore.Encoder().encode(user) else { return }
+            try? await Firestore.firestore().collection("users").document(user.id).setData(encodedUser)
+            
+        }
+    
+}
